@@ -8,6 +8,8 @@ let quasarzone = {
   img: "",
 };
 
-const schedule = scheduler.scheduleJob("*/10 * * * * *", function () {
+const cb = () => {
   quasarzoneRequest(quasarzone);
-});
+};
+
+const schedule = scheduler.scheduleJob("*/10 * * * * *", cb);

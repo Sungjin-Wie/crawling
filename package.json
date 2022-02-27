@@ -10,6 +10,6 @@
     "request": "^2.88.2"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "pm2 start index.js"
   }
 }

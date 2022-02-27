@@ -8,6 +8,7 @@ module.exports = function quasarzoneRequest(info) {
   const QUASARZONE_URL = "https://quasarzone.com/bbs/qb_saleinfo";
   return request(QUASARZONE_URL, (error, response, body) => {
     let quasarzone = info;
+    console.log(quasarzone);
     let $ = cheerio.load(body);
     let newestInfoName = $("p.tit").first();
     let newestInfoPrice = $("div.market-info-sub").first();
