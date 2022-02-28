@@ -1,15 +1,38 @@
 let scheduler = require("node-schedule");
-let quasarzoneRequest = require("./quasarzoneRequest");
+let {
+  sffgalleryTradeRequest,
+  sffgalleryHotDealRequest,
+  sffgalleryEventRequest,
+  quasarzoneRequest,
+  coolenjoyRequest,
+} = require("./requests");
 
-let quasarzone = {
-  link: "",
-  name: "",
-  price: "",
-  img: "",
-};
-
+var flag = 1;
 const cb = () => {
-  quasarzoneRequest(quasarzone);
+  switch (flag) {
+    case 1:
+      quasarzoneRequest();
+      flag++;
+      break;
+    case 2:
+      sffgalleryTradeRequest();
+      flag++;
+      break;
+    case 3:
+      sffgalleryHotDealRequest();
+      flag++;
+      break;
+    case 4:
+      sffgalleryEventRequest();
+      flag++;
+      break;
+    case 5:
+      coolenjoyRequest();
+      flag = 1;
+      break;
+    default:
+      break;
+  }
 };
 
-const schedule = scheduler.scheduleJob("*/10 * * * * *", cb);
+scheduler.scheduleJob("*/2 * * * * *", cb);
