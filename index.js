@@ -5,6 +5,7 @@ let {
   sffgalleryEventRequest,
   quasarzoneRequest,
   coolenjoyRequest,
+  algumonRequest,
 } = require("./requests");
 
 var flag = 1;
@@ -28,6 +29,10 @@ const cb = () => {
       break;
     case 5:
       coolenjoyRequest();
+      flag++;
+      break;
+    case 6:
+      algumonRequest();
       flag = 1;
       break;
     default:

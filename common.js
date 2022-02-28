@@ -1,10 +1,10 @@
 let request = require("request");
 require("dotenv").config();
-const { CHAT_ID, CHAT_SFAM, TELEGRAM } = process.env;
+const { CHAT_SJ, CHAT_SFAM, TELEGRAM } = process.env;
 
-let telegramIDs = [CHAT_ID, CHAT_SFAM];
+let telegramIDs = [CHAT_SJ, CHAT_SFAM];
 
-function generatePromiseArray(text) {
+function generatePromiseArray(text, telegramIDArr = telegramIDs) {
   const options = {
     url: `https://api.telegram.org/bot${TELEGRAM}/sendMessage`,
     qs: {
@@ -13,7 +13,7 @@ function generatePromiseArray(text) {
     },
   };
   let sendMessageArray = [];
-  telegramIDs.map((chatID) => {
+  telegramIDArr.map((chatID) => {
     let newOption = copy(options);
     newOption.qs.chat_id = chatID;
     sendMessageArray.push(sendMessage(newOption));

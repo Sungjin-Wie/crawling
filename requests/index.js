@@ -3,6 +3,7 @@ let sffgalleryTradeRequest = require("./sffgalleryTradeRequest");
 let sffgalleryHotDealRequest = require("./sffgalleryHotDealRequest");
 let sffgalleryEventRequest = require("./sffgalleryEventRequest");
 let coolenjoyRequest = require("./coolenjoyRequest");
+let algumonRequest = require("./algumonRequest");
 
 module.exports = {
   quasarzoneRequest,
@@ -10,4 +11,5 @@ module.exports = {
   sffgalleryTradeRequest,
   sffgalleryEventRequest,
   coolenjoyRequest,
+  algumonRequest,
 };
