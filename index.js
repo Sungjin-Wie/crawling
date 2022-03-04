@@ -1,38 +1,44 @@
 let scheduler = require("node-schedule");
-let {
-  sffgalleryTradeRequest,
-  sffgalleryHotDealRequest,
-  sffgalleryEventRequest,
-  quasarzoneRequest,
-  coolenjoyRequest,
-  algumonRequest,
-} = require("./requests");
+let crawlingRequest = require("./requests");
+const fs = require("fs");
+let target = require("./requests/target");
+const { ALGUMON, SFF_EVENT, SFF_HOTDEAL, SFF_TRADE, COOLENJOY, QUASARZONE } =
+  target;
+
+if (!fs.existsSync("info.json")) {
+  let data = {};
+  Object.keys(target).map((key) => {
+    data[key] = [];
+  });
+
+  fs.writeSync("info.json", JSON.stringify(data, null, 2));
+}
 
 var flag = 1;
 const cb = () => {
   switch (flag) {
     case 1:
-      quasarzoneRequest();
+      crawlingRequest(SFF_EVENT);
       flag++;
       break;
     case 2:
-      sffgalleryTradeRequest();
+      crawlingRequest(SFF_HOTDEAL);
       flag++;
       break;
     case 3:
-      sffgalleryHotDealRequest();
+      crawlingRequest(SFF_TRADE);
       flag++;
       break;
     case 4:
-      sffgalleryEventRequest();
+      crawlingRequest(COOLENJOY);
       flag++;
       break;
     case 5:
-      coolenjoyRequest();
+      crawlingRequest(QUASARZONE);
       flag++;
       break;
     case 6:
-      algumonRequest();
+      crawlingRequest(ALGUMON);
       flag = 1;
       break;
     default:

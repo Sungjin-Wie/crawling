@@ -1,15 +1,3 @@
-let quasarzoneRequest = require("./quasarzoneRequest");
-let sffgalleryTradeRequest = require("./sffgalleryTradeRequest");
-let sffgalleryHotDealRequest = require("./sffgalleryHotDealRequest");
-let sffgalleryEventRequest = require("./sffgalleryEventRequest");
-let coolenjoyRequest = require("./coolenjoyRequest");
-let algumonRequest = require("./algumonRequest");
+let crawlingRequest = require("./crawlingRequest");
 
-module.exports = {
-  quasarzoneRequest,
-  sffgalleryHotDealRequest,
-  sffgalleryTradeRequest,
-  sffgalleryEventRequest,
-  coolenjoyRequest,
-  algumonRequest,
-};
+module.exports = crawlingRequest;

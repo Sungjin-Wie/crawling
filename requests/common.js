@@ -4,7 +4,7 @@ const { CHAT_SJ, CHAT_SFAM, TELEGRAM } = process.env;
 
 let telegramIDs = [CHAT_SJ, CHAT_SFAM];
 
-function generatePromiseArray(text, telegramIDArr = telegramIDs) {
+function generateTelegramRequestMap(text, telegramIDArr = telegramIDs) {
   const options = {
     url: `https://api.telegram.org/bot${TELEGRAM}/sendMessage`,
     qs: {
@@ -22,7 +22,7 @@ function generatePromiseArray(text, telegramIDArr = telegramIDs) {
 }
 
 function sendMessage(option) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     request(option, (error, response, body) => {
       if (!error && response.statusCode == 200) {
         console.log("메시지 전송 완료.");
@@ -30,6 +30,7 @@ function sendMessage(option) {
       } else {
         console.log(body);
         console.log(error);
+        reject(error);
       }
     });
   });
@@ -37,6 +38,25 @@ function sendMessage(option) {
 
 const copy = (obj) => JSON.parse(JSON.stringify(obj));
 
+const checkIfItsRecentlyAdded = (hotDealArray, newHotDeal) => {
+  let isAddedAlready = false;
+  let isMutated = false;
+  hotDealArray.map((hotDeal) => {
+    if (hotDeal.link == newHotDeal.link || hotDeal.name == newHotDeal.name) {
+      isAddedAlready = true;
+    }
+  });
+  if (!isAddedAlready) {
+    isMutated = true;
+    hotDealArray.push(newHotDeal);
+    if (hotDealArray.length > 3) {
+      hotDealArray.shift();
+    }
+  }
+  return [hotDealArray, isMutated];
+};
+
 module.exports = {
-  generatePromiseArray,
+  generateTelegramRequestMap,
+  checkIfItsRecentlyAdded,
 };
