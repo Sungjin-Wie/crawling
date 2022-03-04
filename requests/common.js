@@ -1,8 +1,8 @@
 let request = require("request");
 require("dotenv").config();
-const { CHAT_SJ, CHAT_SFAM, TELEGRAM } = process.env;
+const { CHAT_ADMIN, CHAT_SFAM, TELEGRAM } = process.env;
 
-let telegramIDs = [CHAT_SJ, CHAT_SFAM];
+let telegramIDs = [CHAT_ADMIN, CHAT_SFAM];
 
 function generateTelegramRequestMap(text, telegramIDArr = telegramIDs) {
   const options = {

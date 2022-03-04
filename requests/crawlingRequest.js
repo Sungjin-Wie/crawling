@@ -4,7 +4,6 @@ let {
   generateTelegramRequestMap,
   checkIfItsRecentlyAdded,
 } = require("./common");
-const { ALGUMON, SFF_EVENT, SFF_HOTDEAL, SFF_TRADE } = require("./target");
 const url = require("./url");
 const crawling = require("./crawling");
 const generateText = require("./generateText");
@@ -35,7 +34,7 @@ function crawlingRequest(target) {
         })
         .catch((e) =>
           generateTelegramRequestMap("에러 발생, 확인 요망", [
-            process.env.CHAT_SJ,
+            process.env.CHAT_ADMIN,
           ])
         );
     }
