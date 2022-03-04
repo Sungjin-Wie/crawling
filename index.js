@@ -30,14 +30,6 @@ const cb = () => {
       flag++;
       break;
     case 4:
-      crawlingRequest(COOLENJOY);
-      flag++;
-      break;
-    case 5:
-      crawlingRequest(QUASARZONE);
-      flag++;
-      break;
-    case 6:
       crawlingRequest(ALGUMON);
       flag = 1;
       break;
