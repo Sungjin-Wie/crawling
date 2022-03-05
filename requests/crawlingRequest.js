@@ -14,30 +14,54 @@ const options = {
   },
 };
 require("dotenv").config();
+const query = require("../db/mysql");
+const params = (...params) => [...params];
+const q = require("../db/query");
+
 function crawlingRequest(target) {
-  let data = JSON.parse(fs.readFileSync("info.json", { encoding: "utf8" }));
-  let cachedArr = data[target];
-  return request(url[target], options, (error, response, body) => {
-    let newestInfo = crawling(target, body);
-    let [mutatedArr, isMutated] = checkIfItsRecentlyAdded(
-      cachedArr,
-      newestInfo
-    );
-    if (isMutated) {
-      data[target] = mutatedArr;
-      let text = generateText(target, newestInfo);
-      Promise.all(generateTelegramRequestMap(text))
-        .then(() => {
-          fs.writeFile("info.json", JSON.stringify(data, null, 2), () => {
-            console.log("finished.");
-          });
-        })
-        .catch((e) =>
-          generateTelegramRequestMap("에러 발생, 확인 요망", [
-            process.env.CHAT_ADMIN,
-          ])
+  query(q.select.allWithTargetID, params(target)).then((value) => {
+    let dbArr = value[0];
+    request(url[target], options, (error, response, body) => {
+      let newestInfo = crawling(target, body);
+      if (newestInfo.name == "" || newestInfo.link == "") {
+        return;
+      }
+      let newestData = {
+        targetId: target,
+        title: newestInfo.name,
+        link: newestInfo.link,
+        nickName: newestInfo.owner || "",
+        price: newestInfo.price || "",
+      };
+      let isMutated = true;
+      for (item in dbArr) {
+        if (dbArr[item]?.link == newestData.link) {
+          isMutated = false;
+          break;
+        }
+      }
+      if (isMutated) {
+        let text = generateText(target, newestInfo);
+        let promiseArray = generateTelegramRequestMap(text);
+        promiseArray.push(
+          query(
+            q.insert.newItem,
+            params(
+              newestData.targetId,
+              newestData.title,
+              newestData.link,
+              newestData.nickName,
+              newestData.price
+            )
+          )
         );
-    }
+        if (dbArr.length >= 3)
+          promiseArray.push(query(q.delete.oldItem, params(dbArr[0].link)));
+        Promise.all(promiseArray).then(() => {
+          console.log(`finished`);
+        });
+      }
+    });
   });
 }
 
